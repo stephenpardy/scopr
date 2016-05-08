@@ -3,17 +3,17 @@ import inspect
 
 @contextmanager
 def scope():
-    curframe = inspect.currentframe()
-    calframe = inspect.getouterframes(curframe, 1)
+    current_frame = inspect.currentframe()
+    outer_frame = inspect.getouterframes(current_frame, 1)
 
-    glbs = dict(calframe[2][0].f_globals)  # hold on to the old globals
+    glbs = dict(outer_frame[2][0].f_globals)  # hold on to the old globals
     yield
-    new_variables = set(glbs) ^ set(calframe[2][0].f_globals)
+    new_variables = set(glbs) ^ set(outer_frame[2][0].f_globals)
 
     # rewrite the global variables
-    for k, v in glbs.items():
-        calframe[2][0].f_globals[k] = v
+    for key, value in glbs.items():
+        outer_frame[2][0].f_globals[key] = value
 
     #delete any newly-set variables
     for variable in new_variables:
-        del calframe[2][0].f_globals[variable]
+        del outer_frame[2][0].f_globals[variable]
