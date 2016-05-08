@@ -11,4 +11,4 @@ Load it into your project and enjoy scopes anywhere:
     print(a)  # prints 1
 
 
-Works on CPython with Python 2 3, but is mostly untested for edge-cases.
+Works on CPython with Python 2 and 3, but is mostly untested for edge-cases.
