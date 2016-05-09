@@ -29,5 +29,12 @@ def scope(isolate=False):
     try:
         yield
     finally:
-        # reset the globals in the outer frame with the globals we held on to earlier
-        outer_frame[2][0].f_globals = {key: value for key, value in glbs.items()}
+        new_variables = set(glbs) ^ set(outer_frame[2][0].f_globals)
+
+        # rewrite the global variables
+        for key, value in glbs.items():
+            outer_frame[2][0].f_globals[key] = value
+
+        #delete any newly-set variables
+        for variable in new_variables:
+            del outer_frame[2][0].f_globals[variable]
